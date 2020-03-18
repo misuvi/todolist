@@ -66,7 +66,7 @@ function display(task,eId=null){
         {
             (function () {
                 console.log(element[0]);
-                ipField.setAttribute('value',`${element[0]}`);
+                ipField.value=element[0];
                 // ipField.setAttribute('id',`${i}`);
                 const eSave = document.createElement('button');
                 eSave.setAttribute('id',`${i}`);

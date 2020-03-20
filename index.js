@@ -4,6 +4,12 @@ const button = document.getElementById('myButton');
 
 const ipField = document.createElement('input')
 ipField.setAttribute('type','text');
+ipField.setAttribute('required','');
+ipField.setAttribute('pattern','^(?!\s*$).+');
+
+const newTask = document.getElementById('newTask');
+// newTask.setCustomValidity('Please Enter a valid input');
+newTask.focus();
 // ipField.setAttribute('placeholder','Enter correction here')
 
 // button.addEventListener('click',()=>console.log('enne cllickki'));
@@ -15,6 +21,7 @@ function doneFunction(){
     // console.log(this.id);
     task.splice(this.id,1);
     display(task);
+    newTask.focus();
 }
 
 function editFunction(){
@@ -22,11 +29,19 @@ function editFunction(){
 }
 
 function saveFunction(){
-    const eId=this.id
-    console.log(eId)
-    task[eId][0]=ipField.value;
-    display(task);
-    ipField.value=null;
+    var isValid = ipField.checkValidity();
+    console.log(isValid)
+    if(isValid)
+    {
+        const eId=this.id
+        console.log(eId)
+        task[eId][0]=ipField.value;
+        display(task);
+        newTask.focus();
+    }
+    else{
+        ipField.reportValidity();
+    }
 }
 
 function cancelFunction(){
@@ -81,6 +96,8 @@ function display(task,eId=null){
                 myDiv.appendChild(ulTag);
                 eSave.addEventListener('click',saveFunction);
                 eCancel.addEventListener('click',cancelFunction);
+                ipField.focus();
+                ipField.select();
                 i++;
             } ()) ;
         }
@@ -88,13 +105,22 @@ function display(task,eId=null){
 
 }
 function addElement(){
-    let individualTask=[];
-    individualTask[individualTask.length]=document.getElementById('newTask').value;
-    // individualTask.push(i);
-    console.log(JSON.stringify(individualTask))
-    task[task.length]=individualTask;
-    console.log(JSON.stringify(task));
-    display(task)
+    var isValid = newTask.checkValidity();
+    console.log(isValid)
+    if(isValid)
+    {
+        let individualTask=[];
+        individualTask[individualTask.length]=document.getElementById('newTask').value;
+        // individualTask.push(i);
+        console.log(JSON.stringify(individualTask))
+        task[task.length]=individualTask;
+        console.log(JSON.stringify(task));
+        display(task)
+    }
+    else{
+        newTask.reportValidity();
+    }
+    newTask.focus();
     // i++;
     // const m = document.createElement('ul');
     // const k = document.createElement('li')

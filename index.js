@@ -4,16 +4,14 @@ const button = document.getElementById('myButton');
 
 const ipField = document.createElement('input')
 ipField.setAttribute('type','text');
+ipField.setAttribute('class','basicInput')
 ipField.setAttribute('required','');
 ipField.setAttribute('pattern','^(?!\s*$).+');
 
 const newTask = document.getElementById('newTask');
-// newTask.setCustomValidity('Please Enter a valid input');
-newTask.focus();
-// ipField.setAttribute('placeholder','Enter correction here')
 
-// button.addEventListener('click',()=>console.log('enne cllickki'));
-// button.addEventListener('click',()=>console.log('enne veednumm clicki'));
+newTask.focus();
+
 let i=0;
 let task=[];
 
@@ -33,9 +31,7 @@ function saveFunction(){
     console.log(isValid)
     if(isValid)
     {
-        const eId=this.id
-        console.log(eId)
-        task[eId][0]=ipField.value;
+        task[this.id][0]=ipField.value;
         display(task);
         newTask.focus();
     }
@@ -56,20 +52,22 @@ function display(task,eId=null){
         // console.log('ok');
         const ulTag=document.createElement('ul');
         const liTag=document.createElement('li');
-        liTag.setAttribute('style','list-style:none');
+        liTag.setAttribute('style','list-style-type:decimal');
         element[1]=i;
         if(element[1]!=eId)
         {
             liTag.innerText=element[0];
             (function () {
                 const tDone = document.createElement('button')
-                tDone.setAttribute('id',`${i}`)
                 tDone.innerText='Done'
+                tDone.setAttribute('class','tbutton')
                 const tEdit = document.createElement('button')
-                tEdit.setAttribute('id',`${i}`);
                 tEdit.innerText='Edit'
-                liTag.appendChild(tDone)
+                tEdit.setAttribute('class','tbutton');
+                tDone.setAttribute('id',`${i}`);
+                tEdit.setAttribute('id',`${i}`);
                 liTag.appendChild(tEdit)
+                liTag.appendChild(tDone)
                 myDiv.appendChild(liTag)
                 myDiv.appendChild(ulTag)
                 tDone.addEventListener('click',doneFunction);
@@ -82,18 +80,21 @@ function display(task,eId=null){
             (function () {
                 console.log(element[0]);
                 ipField.value=element[0];
-                // ipField.setAttribute('id',`${i}`);
+                ipField.setAttribute('id',`${i}`);
                 const eSave = document.createElement('button');
-                eSave.setAttribute('id',`${i}`);
                 eSave.innerText='Save';
+                eSave.setAttribute('class','tbutton')
                 const eCancel = document.createElement('button');
-                eCancel.setAttribute('id',`${i}`);
                 eCancel.innerText='Cancel';
+                eCancel.setAttribute('class','tbutton');
+                eSave.setAttribute('id',`${i}`);
+                eCancel.setAttribute('id',`${i}`);
                 liTag.appendChild(ipField);
-                liTag.appendChild(eSave);
                 liTag.appendChild(eCancel);
+                liTag.appendChild(eSave);
                 myDiv.appendChild(liTag);
                 myDiv.appendChild(ulTag);
+                ipField.addEventListener('keydown',(event)=>{if(event.keyCode==13){event.preventDefault();saveFunction.apply(ipField)}})
                 eSave.addEventListener('click',saveFunction);
                 eCancel.addEventListener('click',cancelFunction);
                 ipField.focus();
